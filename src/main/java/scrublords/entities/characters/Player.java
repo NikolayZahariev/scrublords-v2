@@ -45,23 +45,18 @@ public class Player {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
-    public void checkDamageTaken(ArrayList<Enemy> enemies) {
-        for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
-            if (collision.hitboxIntersection(enemy)) {
-                onDamageTaken(enemy.getDamage());
-            }
+    public void checkDamageTaken(Enemy enemy) {
+        if (collision.hitboxIntersection(enemy)) {
+            onDamageTaken(enemy.getDamage());
         }
     }
 
-    public void meleeAttack(ArrayList<Enemy> enemies) {
-        for (Enemy enemy : enemies) {
-            if (character.attacking) {
-                if (facingRight) {
-                    attackRightEnemy(enemy);
-                }
-                attackLeftEnemy(enemy);
+    public void meleeAttack(Enemy enemy) {
+        if (character.attacking) {
+            if (facingRight) {
+                attackRightEnemy(enemy);
             }
+            attackLeftEnemy(enemy);
         }
     }
 
@@ -156,7 +151,7 @@ public class Player {
         character.flinchTimer = System.nanoTime();
     }
 
-    public void isDead(){
+    public void isDead() {
         character.dead = true;
         GamePanel.stateManager.setState(0);
     }

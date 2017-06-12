@@ -1,6 +1,7 @@
-package scrublords.entities.enemies;
+package scrublords.entities.core;
 
 import scrublords.entities.characters.Player;
+import scrublords.entities.enemies.Enemy;
 
 /**
  * @author Nikolay Zahariev <nikolay.g.zahariev@gmail.com>.
@@ -41,6 +42,6 @@ public class EnemyMovement {
     }
 
     private boolean jump(Enemy enemy) {
-        return enemy.collision.characterMapPlacement.y > player.collision.characterMapPlacement.y;
+        return (enemy.collision.characterMapPlacement.y > player.collision.characterMapPlacement.y) && (enemy.collision.characterMapPlacement.y <= 200);
     }
 }

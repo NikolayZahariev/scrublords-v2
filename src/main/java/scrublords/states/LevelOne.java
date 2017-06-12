@@ -4,7 +4,7 @@ import scrublords.entities.characters.Berserker;
 import scrublords.entities.characters.Lich;
 import scrublords.entities.characters.Player;
 import scrublords.entities.enemies.Enemy;
-import scrublords.entities.enemies.EnemyMovement;
+import scrublords.entities.core.EnemyMovement;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
@@ -27,6 +27,7 @@ public class LevelOne implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
+    private int enemyCount;
 
     public LevelOne() {
         init();
@@ -51,21 +52,21 @@ public class LevelOne implements State {
             player.collision.characterMapPlacement.setPosition(100, 200);
         }
         enemies = new ArrayList<>();
-
+        enemyCount = 10;
 
         Enemy enemy = new Enemy(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement);
 
-        enemy.spawnEnemies(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
+        enemy.spawnEnemies(enemyCount, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
     }
 
     @Override
     public void update() {
         player.update();
-        player.checkDamageTaken(enemies);
-        player.meleeAttack(enemies);
         tileMap.setPosition(GamePanel.WIDTH / 2 - player.collision.characterMapPlacement.getx(), GamePanel.HEIGHT / 2 - player.collision.characterMapPlacement.gety());
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
+            player.checkDamageTaken(enemy);
+            player.meleeAttack(enemy);
             enemyMovement = new EnemyMovement(player, enemy);
             enemyMovement.moveToHero();
             enemy.update();

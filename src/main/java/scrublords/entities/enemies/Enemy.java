@@ -47,17 +47,19 @@ public class Enemy {
     private int Low = 200;
     private int High = 300;
 
-    public void spawnEnemies(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
+    public void spawnEnemies(int enemyCount, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
         if (collision.dy == 0) {
-
             Enemy enemy;
-            Point[] enemySpawnPoint = new Point[]{
-                    new Point(200, 200),
-                    new Point(150, 200)
-            };
-            for (Point spawnPoint : enemySpawnPoint) {
+            Point enemySpawnPoint;
+            Random randomCoordinateGenerator = new Random();
+
+            for (int i = 0; i < enemyCount; i++) {
+                int enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
+                int enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
+                enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
+
                 enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
-                enemy.collision.characterMapPlacement.setPosition(spawnPoint.x, spawnPoint.y);
+                enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
                 enemies.add(enemy);
             }
         }
@@ -107,10 +109,12 @@ public class Enemy {
             moveSet.right = false;
             moveSet.left = true;
             facingRight = false;
+            collision.characterMapPlacement.y -= 15;
         } else if (moveSet.left && collision.dx == 0) {
             moveSet.right = true;
             moveSet.left = false;
             facingRight = true;
+            collision.characterMapPlacement.y -= 15;
         }
         visualization.update();
     }
