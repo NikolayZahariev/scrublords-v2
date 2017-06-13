@@ -28,6 +28,7 @@ public class LevelOne implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyCount;
+    private int counter = 0;
 
     public LevelOne() {
         init();
@@ -45,7 +46,7 @@ public class LevelOne implements State {
         slugger = new Slugger(tileMap);
         if (CharState.character == "berserker") {
             player = new Player(tileMap, berserker.spriteSheet, berserker.character, berserker.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
+            player.collision.characterMapPlacement.setPosition(300, 200);
         }
         if (CharState.character == "lich") {
             player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
@@ -65,17 +66,41 @@ public class LevelOne implements State {
         tileMap.setPosition(GamePanel.WIDTH / 2 - player.collision.characterMapPlacement.getx(), GamePanel.HEIGHT / 2 - player.collision.characterMapPlacement.gety());
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
+
             player.checkDamageTaken(enemy);
             player.meleeAttack(enemy);
             enemyMovement = new EnemyMovement(player, enemy);
             enemyMovement.moveToHero();
+
+            //System.out.println("dx: " + enemy.collision.dx);
+            //System.out.println("dy: " + enemy.collision.dy);
             enemy.update();
+            counter++;
+
             if (enemy.enemyStats.dead) {
                 enemies.remove(i);
+                System.out.println(enemies.size());
                 enemy.enemyStats.dead = false;
             }
         }
     }
+    /*
+        `if (enemy.collision.dx == 0 && counter <=1) {
+                System.out.println("first: " + enemy.collision.dx);
+                enemy.collision.characterMapPlacement.y -= 1;
+            }
+            player.checkDamageTaken(enemy);
+            player.meleeAttack(enemy);
+            enemyMovement = new EnemyMovement(player, enemy);
+            enemyMovement.moveToHero();
+
+            if (enemy.collision.dx != 0){
+                System.out.println("else: " + enemy.collision.dx);
+                enemy.update();
+                counter ++;
+            }
+
+     */
 
     @Override
     public void draw(Graphics g) {

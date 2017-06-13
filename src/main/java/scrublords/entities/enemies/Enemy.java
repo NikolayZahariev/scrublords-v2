@@ -25,6 +25,9 @@ public class Enemy {
     private Actions action = new ActionsBuilder().buildAnimations();
     private SpriteSheet spriteSheet;
     public EnemyStats enemyStats;
+    private int enemyXSpawnCoordinate;
+    private int enemyYSpawnCoordinate;
+    public boolean collisionCoor;
 
     public Enemy(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement) {
         this.spriteSheet = spriteSheet;
@@ -54,19 +57,26 @@ public class Enemy {
             Random randomCoordinateGenerator = new Random();
 
             for (int i = 0; i < enemyCount; i++) {
-                int enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
-                int enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
+                enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
+
+                enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
+                enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 1;
                 enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
 
-                enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
                 enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
-                enemies.add(enemy);
+                enemy.update();
+                if (!enemy.collisionCoor) {
+                    enemies.add(enemy);
+                    continue;
+                }
+                System.out.println("No");
+                enemy.spawnEnemies(enemyCount - i, tileMap, spriteSheet, enemyStats, movement, enemies);
             }
         }
     }
 
 
-    private void getNextPosition() {
+    public void getNextPosition() {
         if (moveSet.left) {
             collision.dx -= movement.moveSpeed;
             if (collision.dx < -movement.maxSpeed) {
@@ -109,12 +119,12 @@ public class Enemy {
             moveSet.right = false;
             moveSet.left = true;
             facingRight = false;
-            collision.characterMapPlacement.y -= 15;
+            collisionCoor = true;
         } else if (moveSet.left && collision.dx == 0) {
             moveSet.right = true;
             moveSet.left = false;
             facingRight = true;
-            collision.characterMapPlacement.y -= 15;
+            collisionCoor = true;
         }
         visualization.update();
     }
