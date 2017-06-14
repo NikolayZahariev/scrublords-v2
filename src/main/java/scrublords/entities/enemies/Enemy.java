@@ -27,8 +27,8 @@ public class Enemy {
     public EnemyStats enemyStats;
     private int enemyXSpawnCoordinate;
     public int enemyYSpawnCoordinate = 200;
-    public boolean collisionCoor;
-    private Random r = new Random();
+    public boolean collisionCoor = false;
+    private Random randomCoordinateGenerator = new Random();
 
     public Enemy(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement) {
         this.spriteSheet = spriteSheet;
@@ -47,23 +47,23 @@ public class Enemy {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
-    public void spawnEnemies(int enemyCount, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
+    public void spawnEnemies(int Y, int enemyCount, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
         Enemy enemy;
         Point enemySpawnPoint;
-        Random randomCoordinateGenerator = new Random();
 
         for (int i = 0; i < enemyCount; i++) {
             enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
 
             enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
-            enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
-            enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
+            //enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
+            enemySpawnPoint = new Point(400, 200);
+            //System.out.println(Y);
 
             enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
             enemy.update();
             if (enemy.collisionCoor) {
                 System.out.println("Collision");
-                enemy.spawnEnemies(enemyCount - i, tileMap, spriteSheet, enemyStats, movement, enemies);
+                spawnEnemies(Y - 1, enemyCount - i, tileMap, spriteSheet, enemyStats, movement, enemies);
             }
             System.out.println("No Collision");
             enemies.add(enemy);
@@ -110,18 +110,16 @@ public class Enemy {
             }
         }
 
-        if (collision.dx == 0) {
-            collisionCoor = true;
-            //enemyYSpawnCoordinate = enemyYSpawnCoordinate - 1;
-        }
         if (moveSet.right && collision.dx == 0) {
             moveSet.right = false;
             moveSet.left = true;
             facingRight = false;
+            collisionCoor = true;
         } else if (moveSet.left && collision.dx == 0) {
             moveSet.right = true;
             moveSet.left = false;
             facingRight = true;
+            collisionCoor = true;
         }
 
         //System.out.println(enemyYSpawnCoordinate);

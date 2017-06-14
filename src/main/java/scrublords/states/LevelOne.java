@@ -28,7 +28,6 @@ public class LevelOne implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyCount;
-    private int counter = 0;
 
     public LevelOne() {
         init();
@@ -53,11 +52,11 @@ public class LevelOne implements State {
             player.collision.characterMapPlacement.setPosition(100, 200);
         }
         enemies = new ArrayList<>();
-        enemyCount = 10;
+        enemyCount = 1;
 
         Enemy enemy = new Enemy(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement);
 
-        enemy.spawnEnemies(enemyCount, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
+        enemy.spawnEnemies(200, enemyCount, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
     }
 
     @Override
@@ -72,10 +71,7 @@ public class LevelOne implements State {
             enemyMovement = new EnemyMovement(player, enemy);
             enemyMovement.moveToHero();
 
-            //System.out.println("dx: " + enemy.collision.dx);
-            //System.out.println("dy: " + enemy.collision.dy);
             enemy.update();
-            counter++;
 
             if (enemy.enemyStats.dead) {
                 enemies.remove(i);
@@ -84,23 +80,6 @@ public class LevelOne implements State {
             }
         }
     }
-    /*
-        `if (enemy.collision.dx == 0 && counter <=1) {
-                System.out.println("first: " + enemy.collision.dx);
-                enemy.collision.characterMapPlacement.y -= 1;
-            }
-            player.checkDamageTaken(enemy);
-            player.meleeAttack(enemy);
-            enemyMovement = new EnemyMovement(player, enemy);
-            enemyMovement.moveToHero();
-
-            if (enemy.collision.dx != 0){
-                System.out.println("else: " + enemy.collision.dx);
-                enemy.update();
-                counter ++;
-            }
-
-     */
 
     @Override
     public void draw(Graphics g) {
