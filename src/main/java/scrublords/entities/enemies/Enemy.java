@@ -26,8 +26,9 @@ public class Enemy {
     private SpriteSheet spriteSheet;
     public EnemyStats enemyStats;
     private int enemyXSpawnCoordinate;
-    private int enemyYSpawnCoordinate;
+    public int enemyYSpawnCoordinate = 200;
     public boolean collisionCoor;
+    private Random r = new Random();
 
     public Enemy(TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement) {
         this.spriteSheet = spriteSheet;
@@ -46,32 +47,26 @@ public class Enemy {
         moveSet = new MoveSet(false, false, false, false, false);
     }
 
-    private Random r = new Random();
-    private int Low = 200;
-    private int High = 300;
-
     public void spawnEnemies(int enemyCount, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
-        if (collision.dy == 0) {
-            Enemy enemy;
-            Point enemySpawnPoint;
-            Random randomCoordinateGenerator = new Random();
+        Enemy enemy;
+        Point enemySpawnPoint;
+        Random randomCoordinateGenerator = new Random();
 
-            for (int i = 0; i < enemyCount; i++) {
-                enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
+        for (int i = 0; i < enemyCount; i++) {
+            enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
 
-                enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
-                enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 1;
-                enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
+            enemyXSpawnCoordinate = randomCoordinateGenerator.nextInt(3000) + 50;
+            enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
+            enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
 
-                enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
-                enemy.update();
-                if (!enemy.collisionCoor) {
-                    enemies.add(enemy);
-                    continue;
-                }
-                System.out.println("No");
+            enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
+            enemy.update();
+            if (enemy.collisionCoor) {
+                System.out.println("Collision");
                 enemy.spawnEnemies(enemyCount - i, tileMap, spriteSheet, enemyStats, movement, enemies);
             }
+            System.out.println("No Collision");
+            enemies.add(enemy);
         }
     }
 
@@ -115,17 +110,22 @@ public class Enemy {
             }
         }
 
+        if (collision.dx == 0) {
+            collisionCoor = true;
+            //enemyYSpawnCoordinate = enemyYSpawnCoordinate - 1;
+        }
         if (moveSet.right && collision.dx == 0) {
             moveSet.right = false;
             moveSet.left = true;
             facingRight = false;
-            collisionCoor = true;
         } else if (moveSet.left && collision.dx == 0) {
             moveSet.right = true;
             moveSet.left = false;
             facingRight = true;
-            collisionCoor = true;
         }
+
+        //System.out.println(enemyYSpawnCoordinate);
+        //System.out.println(collisionCoor);
         visualization.update();
     }
 
