@@ -3,6 +3,7 @@ package scrublords.states;
 import scrublords.entities.characters.Berserker;
 import scrublords.entities.characters.Lich;
 import scrublords.entities.characters.Player;
+import scrublords.entities.core.EnemySpawn;
 import scrublords.entities.enemies.Enemy;
 import scrublords.entities.core.EnemyMovement;
 import scrublords.entities.enemies.Slugger;
@@ -28,6 +29,7 @@ public class LevelOne implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private int enemyNumber = 10;
+    private EnemySpawn enemySpawn = new EnemySpawn();
 
     public LevelOne() {
         init();
@@ -53,8 +55,7 @@ public class LevelOne implements State {
         }
 
         enemies = new ArrayList<>();
-        Enemy enemy = new Enemy(tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement);
-        enemy.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
+        enemySpawn.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
     }
 
     @Override

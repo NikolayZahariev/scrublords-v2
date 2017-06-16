@@ -22,7 +22,6 @@ public class EnemySpawn {
 
     }
 
-
     public void spawnEnemies(int enemyNumber, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
         for (int i = 0; i < enemyNumber; i++) {
             enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
@@ -42,7 +41,7 @@ public class EnemySpawn {
                     enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
                 }
 
-                if (checkEnemyFloat(enemy) {
+                if (checkEnemyFloat(enemy)) {
                     enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
                     enemies.add(enemy);
                     break;
@@ -51,11 +50,11 @@ public class EnemySpawn {
         }
     }
 
-    private boolean checkEnemyFloat (Enemy enemy) {
+    private boolean checkEnemyFloat(Enemy enemy) {
         return ((!enemy.collision.bottomLeft && !enemy.collision.bottomRight) && (!enemy.collision.topLeft && !enemy.collision.topRight));
     }
 
-    private boolean checkTileCollision (Enemy enemy) {
+    private boolean checkTileCollision(Enemy enemy) {
         return (enemy.collision.bottomLeft || enemy.collision.bottomRight || enemy.collision.topLeft || enemy.collision.topRight);
     }
 }
