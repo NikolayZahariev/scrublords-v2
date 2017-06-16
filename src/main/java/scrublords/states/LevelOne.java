@@ -37,7 +37,7 @@ public class LevelOne implements State {
     public void init() {
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/level1-1.map");
+        tileMap.mapLoading.loadMap("/maps/level1-map.map");
         tileMap.setPosition(0, 0);
         background.getResource("/backgrounds/levelone.gif");
         berserker = new Berserker(tileMap);

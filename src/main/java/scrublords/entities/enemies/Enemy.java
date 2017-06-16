@@ -63,7 +63,7 @@ public class Enemy {
                     continue;
                 }
 
-                if (enemy.collision.bottomLeft || enemy.collision.bottomRight) {
+                if (enemy.collision.bottomLeft || enemy.collision.bottomRight || enemy.collision.topLeft || enemy.collision.topRight) {
                     enemy.enemyYSpawnCoordinate -= 1;
                     enemySpawnPoint = new Point(enemy.enemyXSpawnCoordinate, enemy.enemyYSpawnCoordinate);
                     enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
