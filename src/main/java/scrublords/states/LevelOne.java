@@ -28,7 +28,7 @@ public class LevelOne implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
-    private int enemyNumber = 10;
+    private int enemyNumber = 30;
     private EnemySpawn enemySpawn = new EnemySpawn();
 
     public LevelOne() {
@@ -39,7 +39,7 @@ public class LevelOne implements State {
     public void init() {
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/level1-map.map");
+        tileMap.mapLoading.loadMap("/maps/levelOne.map");
         tileMap.setPosition(0, 0);
         background.getResource("/backgrounds/levelone.gif");
         berserker = new Berserker(tileMap);
@@ -50,9 +50,6 @@ public class LevelOne implements State {
             player.collision.characterMapPlacement.setPosition(100, 200);
         }
         if (CharState.character == "lich") {
-            player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
-            player.collision.characterMapPlacement.setPosition(100, 200);
-        } else {
             player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
             player.collision.characterMapPlacement.setPosition(100, 200);
         }

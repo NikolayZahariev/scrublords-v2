@@ -15,13 +15,9 @@ import java.util.Random;
 public class EnemySpawn {
     private Enemy enemy;
     private Point enemySpawnPoint;
-    private int enemyXSpawnCoordinate;
     private Random randomCoordinateGenerator = new Random();
+    private int enemyXSpawnCoordinate;
     private int enemyYSpawnCoordinate;
-
-    public EnemySpawn() {
-
-    }
 
     public void spawnEnemies(int enemyNumber, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies, Player player) {
         for (int i = 0; i < enemyNumber; i++) {
@@ -33,22 +29,17 @@ public class EnemySpawn {
                 enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                 enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
 
-                if(!(heroOnLeft(enemy, player) || heroOnRight(enemy, player))){
-                    System.out.println("LOOOOOP");
+                if (ifNearPlayer(player, 150, 150) || ifNoCollision(enemy)) {
                     continue;
                 }
 
-                if (checkEnemyFloat(enemy)) {
-                    continue;
-                }
-
-                if (checkTileCollision(enemy)) {
+                if (ifBottomCollision(enemy)) {
                     enemyYSpawnCoordinate -= 1;
                     enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                     enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
                 }
 
-                if (checkEnemyFloat(enemy)) {
+                if (ifNoCollision(enemy)) {
                     enemy.collision.characterMapPlacement.setPosition(enemySpawnPoint.x, enemySpawnPoint.y);
                     enemies.add(enemy);
                     break;
@@ -57,19 +48,15 @@ public class EnemySpawn {
         }
     }
 
-    private boolean heroOnLeft(Enemy enemy, Player player) {
-        return enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x - 150 && enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x;
+    private boolean ifNearPlayer(Player player, int leftMargin, int rightMargin) {
+        return enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftMargin && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightMargin;
     }
 
-    private boolean heroOnRight(Enemy enemy, Player player) {
-        return enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x + 150 && enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x;
-    }
-
-    private boolean checkEnemyFloat(Enemy enemy) {
+    private boolean ifNoCollision(Enemy enemy) {
         return ((!enemy.collision.bottomLeft && !enemy.collision.bottomRight) && (!enemy.collision.topLeft && !enemy.collision.topRight));
     }
 
-    private boolean checkTileCollision(Enemy enemy) {
-        return (enemy.collision.bottomLeft || enemy.collision.bottomRight || enemy.collision.topLeft || enemy.collision.topRight);
+    private boolean ifBottomCollision(Enemy enemy) {
+        return (enemy.collision.bottomLeft || enemy.collision.bottomRight);
     }
 }

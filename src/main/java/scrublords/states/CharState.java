@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
  * @author Denis Dimitrov <denis.k.dimitrov@gmail.com>.
  */
 public class CharState implements State {
-    public static String character;
+    public static String character = "berserker";
     private BackgroundStylization stylization = new BackgroundStylization();
     private int currentChoice = 0;
     private String[] options = {
