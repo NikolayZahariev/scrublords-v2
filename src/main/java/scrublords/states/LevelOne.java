@@ -52,10 +52,13 @@ public class LevelOne implements State {
         if (CharState.character == "lich") {
             player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
             player.collision.characterMapPlacement.setPosition(100, 200);
+        } else {
+            player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
+            player.collision.characterMapPlacement.setPosition(100, 200);
         }
 
         enemies = new ArrayList<>();
-        enemySpawn.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies);
+        enemySpawn.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
     }
 
     @Override

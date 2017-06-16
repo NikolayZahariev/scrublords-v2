@@ -1,6 +1,7 @@
 package scrublords.entities.core;
 
 import scrublords.core.SpriteSheet;
+import scrublords.entities.characters.Player;
 import scrublords.entities.enemies.Enemy;
 import scrublords.tilemaps.TileMap;
 
@@ -22,7 +23,7 @@ public class EnemySpawn {
 
     }
 
-    public void spawnEnemies(int enemyNumber, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies) {
+    public void spawnEnemies(int enemyNumber, TileMap tileMap, SpriteSheet spriteSheet, EnemyStats enemyStats, Movement movement, ArrayList<Enemy> enemies, Player player) {
         for (int i = 0; i < enemyNumber; i++) {
             enemy = new Enemy(tileMap, spriteSheet, enemyStats, movement);
 
@@ -31,6 +32,12 @@ public class EnemySpawn {
                 enemyYSpawnCoordinate = randomCoordinateGenerator.nextInt(200) + 50;
                 enemySpawnPoint = new Point(enemyXSpawnCoordinate, enemyYSpawnCoordinate);
                 enemy.collision.calculateCorners(enemySpawnPoint.x, enemySpawnPoint.y);
+
+                if(!(heroOnLeft(enemy, player) || heroOnRight(enemy, player))){
+                    System.out.println("LOOOOOP");
+                    continue;
+                }
+
                 if (checkEnemyFloat(enemy)) {
                     continue;
                 }
@@ -48,6 +55,14 @@ public class EnemySpawn {
                 }
             }
         }
+    }
+
+    private boolean heroOnLeft(Enemy enemy, Player player) {
+        return enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x - 150 && enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x;
+    }
+
+    private boolean heroOnRight(Enemy enemy, Player player) {
+        return enemy.collision.characterMapPlacement.x < player.collision.characterMapPlacement.x + 150 && enemy.collision.characterMapPlacement.x > player.collision.characterMapPlacement.x;
     }
 
     private boolean checkEnemyFloat(Enemy enemy) {
