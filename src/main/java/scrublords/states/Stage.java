@@ -74,6 +74,18 @@ public class Stage implements State {
                 enemy.enemyStats.dead = false;
             }
         }
+        if (characterTeleport()) {
+            player.collision.characterMapPlacement.setPosition(3491, 150);
+        }
+    }
+
+    public boolean characterTeleport() {
+        //enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftMargin && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightMargin;
+        return player.collision.characterMapPlacement.x >= 3060 && player.collision.characterMapPlacement.x <= 3100;
+    }
+
+    public boolean bossIsDead(ArrayList<Enemy> enemies) {
+        return true;
     }
 
     @Override
@@ -124,7 +136,7 @@ public class Stage implements State {
         maxY = 210;
         tileMap = new TileMap(30);
         tileMap.tileLoading.loadTiles("/tilesets/grasstileset.gif");
-        tileMap.mapLoading.loadMap("/maps/levelOne.map");
+        tileMap.mapLoading.loadMap("/maps/levelOneV2.map");
         tileMap.setPosition(0, 0);
         background.getResource("/backgrounds/levelone.gif");
         berserker = new Berserker(tileMap);
@@ -136,8 +148,18 @@ public class Stage implements State {
         enemies = new ArrayList<>();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
-        enemySpawner.spawnBosses(3035, 200, tileMap, levelOneBoss.spriteSheet, levelOneBoss.enemyStats, levelOneBoss.movement, enemies);
+        enemySpawner.spawnBosses(3934, 195, tileMap, levelOneBoss.spriteSheet, levelOneBoss.enemyStats, levelOneBoss.movement, enemies);
     }
+
+    /*
+        x player: 3491
+        y player: 150
+        x port: 3060
+        y port: 200
+
+        x boss: 3934
+        y boss: 195
+     */
 
     private void loadLevelTwo() {
         mapPitfall = 410;
