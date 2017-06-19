@@ -19,7 +19,7 @@ public class Berserker {
     public CollisionDetection collision;
     public SpriteDimensions spriteDimensions;
     public SpriteSheet spriteSheet;
-    public Character character = new Character(5, 5, false, false, 0, false, 3, 31, new ArrayList<>(), new int[]{2, 8, 1, 2, 4, 2, 5});
+    public Character character = new Character(20, 20, false, false, 0, false, 3, 31, new ArrayList<>(), new int[]{2, 8, 1, 2, 4, 2, 5});
     public Actions action = new ActionsBuilder().buildAnimations();
     public Movement movement;
     public Visualization visualization;

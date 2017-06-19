@@ -36,7 +36,7 @@ public class Stage implements State {
     private EnemyMovement enemyMovement;
     private Slugger slugger;
     private LevelOneBoss levelOneBoss;
-    private int enemyNumber = 10;
+    private int enemyNumber = 1;
 
     public Stage() {
         if (Objects.equals(CharState.character, "berserker")) {
@@ -72,20 +72,23 @@ public class Stage implements State {
             if (enemy.enemyStats.dead) {
                 enemies.remove(i);
                 enemy.enemyStats.dead = false;
+                if (i == enemies.size()) {
+                    bossBattleEndTeleport();
+                }
             }
         }
-        if (characterTeleport()) {
+        bossBattleStartTeleport();
+
+    }
+
+    public void bossBattleStartTeleport() {
+        if (player.collision.characterMapPlacement.x >= 3060 && player.collision.characterMapPlacement.x <= 3100) {
             player.collision.characterMapPlacement.setPosition(3491, 150);
         }
     }
 
-    public boolean characterTeleport() {
-        //enemyXSpawnCoordinate > player.collision.characterMapPlacement.x - leftMargin && enemyXSpawnCoordinate < player.collision.characterMapPlacement.x + rightMargin;
-        return player.collision.characterMapPlacement.x >= 3060 && player.collision.characterMapPlacement.x <= 3100;
-    }
-
-    public boolean bossIsDead(ArrayList<Enemy> enemies) {
-        return true;
+    public void bossBattleEndTeleport() {
+        GamePanel.stateManager.setState(0);
     }
 
     @Override
@@ -150,16 +153,6 @@ public class Stage implements State {
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
         enemySpawner.spawnBosses(3934, 195, tileMap, levelOneBoss.spriteSheet, levelOneBoss.enemyStats, levelOneBoss.movement, enemies);
     }
-
-    /*
-        x player: 3491
-        y player: 150
-        x port: 3060
-        y port: 200
-
-        x boss: 3934
-        y boss: 195
-     */
 
     private void loadLevelTwo() {
         mapPitfall = 410;

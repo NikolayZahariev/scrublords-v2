@@ -16,7 +16,7 @@ public class LevelOneBoss {
     public CollisionDetection collision;
     public SpriteDimensions spriteDimensions;
     public SpriteSheet spriteSheet;
-    public EnemyStats enemyStats = new EnemyStats(30, 30, false, false, 0, false, 3, new ArrayList<>(), new int[]{3});
+    public EnemyStats enemyStats = new EnemyStats(5, 5, false, false, 0, false, 3, new ArrayList<>(), new int[]{3});
     public Actions action = new ActionsBuilder().buildAnimations();
     public Movement movement;
     public Visualization visualization;
