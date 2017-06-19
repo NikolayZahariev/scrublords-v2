@@ -6,6 +6,7 @@ import scrublords.entities.characters.Player;
 import scrublords.entities.core.EnemyMovement;
 import scrublords.entities.core.EnemySpawner;
 import scrublords.entities.enemies.Enemy;
+import scrublords.entities.enemies.LevelOneBoss;
 import scrublords.entities.enemies.Slugger;
 import scrublords.main.GamePanel;
 import scrublords.main.State;
@@ -34,6 +35,7 @@ public class Stage implements State {
     private ArrayList<Enemy> enemies;
     private EnemyMovement enemyMovement;
     private Slugger slugger;
+    private LevelOneBoss levelOneBoss;
     private int enemyNumber = 10;
 
     public Stage() {
@@ -128,11 +130,13 @@ public class Stage implements State {
         berserker = new Berserker(tileMap);
         lich = new Lich(tileMap);
         slugger = new Slugger(tileMap);
+        levelOneBoss = new LevelOneBoss(tileMap);
         player = new Player(tileMap, lich.spriteSheet, lich.character, lich.movement);
         player.collision.characterMapPlacement.setPosition(100, 200);
         enemies = new ArrayList<>();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnEnemies(enemyNumber, tileMap, slugger.spriteSheet, slugger.enemyStats, slugger.movement, enemies, player);
+        enemySpawner.spawnBosses(3035, 200, tileMap, levelOneBoss.spriteSheet, levelOneBoss.enemyStats, levelOneBoss.movement, enemies);
     }
 
     private void loadLevelTwo() {
